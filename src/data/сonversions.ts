@@ -1,13 +1,4 @@
-export type Variation = {
-  id?: number;
-  name: string;
-};
-
-export type RawDataType = {
-  date: string;
-  visits: { [key: string]: number };
-  conversions: { [key: string]: number };
-};
+import type { Variation, RawDataType } from "../types";
 
 export const variations: Variation[] = [
   {

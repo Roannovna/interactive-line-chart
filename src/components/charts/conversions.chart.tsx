@@ -12,6 +12,7 @@ import { CHART_COLORS } from "../../styles/chart-colors";
 import { tooltipFormatDate } from "../../utils";
 import { useState, useMemo, useEffect } from "react";
 import { CustomTooltip } from "../tooltips/custom-tooltip";
+import "../../styles/conversions-chart.css";
 
 interface ConversionChartProps {
   dataDay: Record<string, number | string | null>[];
@@ -116,15 +117,11 @@ export const ConversionChart = ({
         <option value="area">Area</option>
       </select>
       <div
-        style={{
-          display: "inline-flex",
-          gap: 8,
-          marginLeft: 8,
-          position: isFullscreen ? "fixed" : "relative",
-          top: isFullscreen ? 12 : undefined,
-          right: isFullscreen ? 12 : undefined,
-          zIndex: 2,
-        }}
+        className={
+          isFullscreen
+            ? "chart-controls chart-controls--fullscreen"
+            : "chart-controls"
+        }
       >
         <button
           onClick={() => setIsFullscreen((v) => !v)}
@@ -132,24 +129,17 @@ export const ConversionChart = ({
         >
           ⤢
         </button>
-        <div
-          style={{
-            display: "inline-flex",
-            border: "1px solid #ddd",
-            borderRadius: 8,
-            overflow: "hidden",
-          }}
-        >
+        <div className="zoom-group">
           <button
             onClick={zoomOut}
-            style={{ padding: "4px 10px" }}
+            className="zoom-button"
             title="Zoom out"
           >
             −
           </button>
           <button
             onClick={zoomIn}
-            style={{ padding: "4px 10px", borderLeft: "1px solid #ddd" }}
+            className="zoom-button zoom-button--right"
             title="Zoom in"
           >
             +
@@ -160,16 +150,9 @@ export const ConversionChart = ({
         </button>
       </div>
       <ChartLineStyle
-        style={{
-          width: "100%",
-          position: isFullscreen ? "fixed" : "relative",
-          left: isFullscreen ? 0 : undefined,
-          top: isFullscreen ? 0 : undefined,
-          zIndex: 1,
-          maxWidth: isFullscreen ? "100vw" : "700px",
-          maxHeight: isFullscreen ? "100vh" : "70vh",
-          aspectRatio: 1.618,
-        }}
+        className={
+          isFullscreen ? "chart-wrapper chart-wrapper--fullscreen" : "chart-wrapper"
+        }
         responsive
         data={dataCurrent.slice(brushStart, brushEnd + 1)}
         margin={{

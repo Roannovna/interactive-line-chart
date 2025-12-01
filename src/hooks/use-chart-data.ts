@@ -1,10 +1,6 @@
 import { useMemo } from "react";
-import {
-  data,
-  variations,
-  type RawDataType,
-  type Variation,
-} from "../data/сonversions";
+import { data, variations } from "../data/сonversions";
+import type { Variation, RawDataType } from "../types";
 import { conversionRate } from "../utils";
 
 const getConversionRateForAllVariations = (item: RawDataType) => {
