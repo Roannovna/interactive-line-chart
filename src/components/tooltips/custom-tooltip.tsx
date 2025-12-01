@@ -2,7 +2,7 @@ import type { RechartsTooltipProps } from "../../types";
 import calendarIcon from "../../assets/calendar.svg";
 import bestIcon from "../../assets/best.svg";
 import { tooltipFormatDate } from "../../utils/format-date";
-import "../../styles/custom-tooltip.css";
+import "./custom-tooltip.css";
 
 export const CustomTooltip = (props: RechartsTooltipProps) => {
   const { active, payload, label } = props;

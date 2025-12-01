@@ -5,3 +5,10 @@ export const tooltipFormatDate = (tickItem: number) => {
     year: "2-digit",
   });
 };
+
+export const axisFormatDate = (tickItem: number) => {
+  return new Date(tickItem).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+  });
+};

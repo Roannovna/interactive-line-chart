@@ -9,10 +9,11 @@ import {
   AreaChart,
 } from "recharts";
 import { CHART_COLORS } from "../../styles/chart-colors";
-import { tooltipFormatDate } from "../../utils";
+import { axisFormatDate } from "../../utils";
 import { useState, useMemo, useEffect } from "react";
 import { CustomTooltip } from "../tooltips/custom-tooltip";
-import "../../styles/conversions-chart.css";
+import "./conversions-chart.css";
+import { chartControls } from "../../assets/chart-controls/export";
 
 interface ConversionChartProps {
   dataDay: Record<string, number | string | null>[];
@@ -84,74 +85,87 @@ export const ConversionChart = ({
 
   return (
     <>
-      <select
-        name="timePeriod"
-        id=""
-        onChange={handleTimePeriodChange}
-        value={timePeriod}
-      >
-        <option value="day">Day</option>
-        <option value="week">Week</option>
-      </select>
-      <select
-        name="variations"
-        id=""
-        onChange={handleVariationsChange}
-        value={
-          selectedVariations.length === allKeys.length
-            ? "all"
-            : selectedVariations[0] || "all"
-        }
-      >
-        <option value="all">All variations selected</option>
-        {allKeys.map((k) => (
-          <option key={k} value={k}>
-            {k}
-          </option>
-        ))}
-      </select>
-      <select name="chartType" id="" onChange={handleChartTypeChange}>
-        <option value="line">Line (smooth)</option>
-        <option value="line-linear">Line (linear)</option>
-        <option value="line-smooth-outline">Line (smooth + outline)</option>
-        <option value="area">Area</option>
-      </select>
-      <div
-        className={
-          isFullscreen
-            ? "chart-controls chart-controls--fullscreen"
-            : "chart-controls"
-        }
-      >
-        <button
-          onClick={() => setIsFullscreen((v) => !v)}
-          title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-        >
-          ⤢
-        </button>
-        <div className="zoom-group">
-          <button
-            onClick={zoomOut}
-            className="zoom-button"
-            title="Zoom out"
+      <div className="chart-display-controls">
+        <div className="chart-display-controls__data">
+          <select
+            name="timePeriod"
+            id=""
+            onChange={handleTimePeriodChange}
+            value={timePeriod}
           >
-            −
-          </button>
-          <button
-            onClick={zoomIn}
-            className="zoom-button zoom-button--right"
-            title="Zoom in"
+            <option value="day">Day</option>
+            <option value="week">Week</option>
+          </select>
+          <select
+            name="variations"
+            id=""
+            onChange={handleVariationsChange}
+            value={
+              selectedVariations.length === allKeys.length
+                ? "all"
+                : selectedVariations[0] || "all"
+            }
           >
-            +
-          </button>
+            <option value="all">All variations selected</option>
+            {allKeys.map((k) => (
+              <option key={k} value={k}>
+                {k}
+              </option>
+            ))}
+          </select>
         </div>
-        <button onClick={resetView} title="Reset">
-          ⟲
-        </button>
+        <div className="chart-display-controls__visual">
+          <select name="chartType" id="" onChange={handleChartTypeChange}>
+            <option value="line">Line style: smooth line</option>
+            <option value="line-linear">Line style: string line</option>
+            <option value="line-smooth-outline">Line style: outline</option>
+            <option value="area">Line style: area</option>
+          </select>
+          <div
+            className={
+              isFullscreen
+                ? "chart-controls chart-controls--fullscreen"
+                : "chart-controls"
+            }
+          >
+            <button
+              onClick={() => setIsFullscreen((v) => !v)}
+              className="chart-controls__btn chart-controls__btn--fullscreen"
+              title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+            >
+              <img src={chartControls.fullscreenIcon} alt="fullscreen" />
+            </button>
+            <div className="chart-controls__zoom-group">
+              <button
+                onClick={zoomOut}
+                className="chart-controls__btn chart-controls__btn--zoom-out"
+                title="Zoom out"
+              >
+                <img src={chartControls.zoomOutIcon} alt="zoom out" />
+              </button>
+              <button
+                onClick={zoomIn}
+                className="chart-controls__btn chart-controls__btn--zoom-in"
+                title="Zoom in"
+              >
+                <img src={chartControls.zoomInIcon} alt="zoom in" />
+              </button>
+              <button
+                onClick={resetView}
+                className="chart-controls__btn chart-controls__btn--reset"
+                title="Reset"
+              >
+                <img src={chartControls.resetIcon} alt="reset" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
       <ChartLineStyle
         className={
-          isFullscreen ? "chart-wrapper chart-wrapper--fullscreen" : "chart-wrapper"
+          isFullscreen
+            ? "chart-wrapper chart-wrapper--fullscreen"
+            : "chart-wrapper"
         }
         responsive
         data={dataCurrent.slice(brushStart, brushEnd + 1)}
@@ -165,7 +179,7 @@ export const ConversionChart = ({
         <CartesianGrid strokeDasharray="3 3" stroke="var(--axis-lines-color)" />
         <XAxis
           dataKey="date"
-          tickFormatter={tooltipFormatDate}
+          tickFormatter={axisFormatDate}
           tick={{ fill: "var(--axis-label-color)" }}
           allowDataOverflow
         />
@@ -176,7 +190,12 @@ export const ConversionChart = ({
           tick={{ fill: "var(--axis-label-color)" }}
           allowDataOverflow
         />
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip
+          active
+          content={<CustomTooltip />}
+          cursor={{ fill: "transparent" }}
+          wrapperStyle={{ outline: "none" }}
+        />
         {selectedVariations.map((key) => {
           const i = allKeys.indexOf(key);
           if (!chartType.startsWith("line")) {

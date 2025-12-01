@@ -1,3 +1,5 @@
+@import './styles/theme.css';
+
 *,
 *::before,
 *::after {
@@ -9,6 +11,9 @@
 body {
   min-inline-size: 671px;
   max-inline-size: 1300px;
+  background-color: var(--bg-color);
+  color: var(--main-text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 button,
@@ -17,4 +22,17 @@ a {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+}
+
+
+select {
+  height: 28px;
+  border: 1px solid var(--chart-display-controls-select);
+  border-radius: 4px;
+  font-family: Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: 0.25px;
+  color: var(--main-text-color);
+  cursor: pointer;
 }

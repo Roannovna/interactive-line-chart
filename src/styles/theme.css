@@ -4,14 +4,26 @@
   --axis-label-color: #998f9a;
   --chart-data-color: #52515B;
   --main-text-color: #1B1B23;
+  --tooltip-border-color: #E1DFE7;
+  --tooltip-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  --border-dashed-color: #E1DFE7;
+  --chart-controls-bg-color: transparent;
+  --chart-controls-border-color: #E1DFE7;
+  --chart-display-controls-select: #C7C5D0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-color: #000027;
-    --axis-lines-color: transparent;
-    --axis-label-color: #918F9A;
-    --chart-data-color: #e4e3e7;
-    --main-text-color: #dddddd;
+  --bg-color: #000027;
+  --axis-lines-color: transparent;
+  --axis-label-color: #918F9A;
+  --chart-data-color: #e4e3e7;
+  --main-text-color: #dddddd;
+  --tooltip-border-color: #444466;
+  --tooltip-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  --border-dashed-color: #444466;
+  --chart-controls-bg-color: transparent;
+  --chart-controls-border-color: #444466;
+  --chart-display-controls-select: #444466;
   }
 }

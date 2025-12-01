@@ -1,1 +1,1 @@
-export { ConversionChart } from "./charts/conversions.chart";
+export { ConversionChart } from "./charts/conversions-chart";
