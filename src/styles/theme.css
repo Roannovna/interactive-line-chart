@@ -1,0 +1,17 @@
+:root {
+  --bg-color: #ffffff;
+  --axis-lines-color: #E1DFE7;
+  --axis-label-color: #998f9a;
+  --chart-data-color: #52515B;
+  --main-text-color: #1B1B23;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #000027;
+    --axis-lines-color: transparent;
+    --axis-label-color: #918F9A;
+    --chart-data-color: #e4e3e7;
+    --main-text-color: #dddddd;
+  }
+}

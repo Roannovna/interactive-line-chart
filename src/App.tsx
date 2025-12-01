@@ -2,9 +2,9 @@ import { ConversionChart } from "./components";
 import { useChartData } from "./hooks/use-chart-data";
 
 function App() {
-  const { conversionData } = useChartData();
+  const { conversionData, weeklyConversionData } = useChartData();
 
-  return <ConversionChart data={conversionData} />;
+  return <ConversionChart dataDay={conversionData} dataWeek={weeklyConversionData} />;
 }
 
 export default App;
