@@ -26,62 +26,90 @@ export const ConversionChart = ({
 }: ConversionChartProps) => {
   const [chartType, setChartType] = useState("line");
   const [timePeriod, setTimePeriod] = useState("day");
-  const handleChartTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setChartType(e.target.value);
-  };
-  const handleTimePeriodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTimePeriod(e.target.value);
-  };
-  const allKeys = useMemo(() => {
-    const base = (timePeriod === "day" ? dataDay : dataWeek)[0] || {};
-    return Object.keys(base).filter((k) => k !== "date");
-  }, [timePeriod, dataDay, dataWeek]);
-  const [selectedVariations, setSelectedVariations] =
-    useState<string[]>(allKeys);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const dataCurrent = timePeriod === "day" ? dataDay : dataWeek;
+
+  const allKeys = useMemo(
+    () => Object.keys(dataCurrent[0] || {}).filter((k) => k !== "date"),
+    [dataCurrent]
+  );
+
+  const [selectedVariations, setSelectedVariations] = useState<string[]>(allKeys);
+  const [brushStart, setBrushStart] = useState(0);
+  const [brushEnd, setBrushEnd] = useState(dataCurrent.length - 1);
+
   useEffect(() => {
     setSelectedVariations(allKeys);
   }, [allKeys]);
-  const handleVariationsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const val = e.target.value;
-    if (val === "all") setSelectedVariations(allKeys);
-    else setSelectedVariations([val]);
-  };
 
-  const dataCurrent = timePeriod === "day" ? dataDay : dataWeek;
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [brushStart, setBrushStart] = useState(0);
-  const [brushEnd, setBrushEnd] = useState(dataCurrent.length - 1);
   useEffect(() => {
     setBrushStart(0);
-    setBrushEnd((timePeriod === "day" ? dataDay : dataWeek).length - 1);
-  }, [timePeriod, dataDay, dataWeek]);
-  const zoomStep = Math.max(
-    1,
-    Math.floor((timePeriod === "day" ? dataDay : dataWeek).length * 0.1)
-  );
+    setBrushEnd(dataCurrent.length - 1);
+  }, [dataCurrent]);
+
+  const zoomStep = Math.max(1, Math.floor(dataCurrent.length * 0.1));
+
   const zoomIn = () => {
-    const len = (timePeriod === "day" ? dataDay : dataWeek).length;
+    const len = dataCurrent.length;
     const nextStart = Math.min(brushStart + zoomStep, len - 2);
     const nextEnd = Math.max(brushEnd - zoomStep, nextStart + 1);
     setBrushStart(nextStart);
     setBrushEnd(nextEnd);
   };
+
   const zoomOut = () => {
-    const len = (timePeriod === "day" ? dataDay : dataWeek).length;
+    const len = dataCurrent.length;
     const nextStart = Math.max(brushStart - zoomStep, 0);
     const nextEnd = Math.min(brushEnd + zoomStep, len - 1);
     setBrushStart(nextStart);
     setBrushEnd(nextEnd);
   };
+
   const resetView = () => {
-    const len = (timePeriod === "day" ? dataDay : dataWeek).length;
     setBrushStart(0);
-    setBrushEnd(len - 1);
+    setBrushEnd(dataCurrent.length - 1);
     setIsFullscreen(false);
   };
 
   const ChartLineStyle = chartType.startsWith("line") ? LineChart : AreaChart;
   const ChartComponent = chartType.startsWith("line") ? Line : Area;
+
+  const renderSeries = (key: string, index: number) => {
+    const color = CHART_COLORS[index];
+    const commonProps = {
+      key,
+      dataKey: key,
+      stroke: color,
+      fill: color,
+      dot: false,
+    };
+
+    if (chartType === "line-smooth-outline") {
+      return (
+        <>
+          <ChartComponent
+            {...commonProps}
+            key={`${key}-outline-main`}
+            type="monotone"
+            strokeWidth={10}
+            strokeOpacity={0.2}
+            strokeLinecap="square"
+            isAnimationActive={false}
+          />
+          <ChartComponent {...commonProps} type="monotone" />
+        </>
+      );
+    }
+
+    return (
+      <ChartComponent
+        {...commonProps}
+        type={chartType === "line-linear" ? "linear" : "monotone"}
+      />
+    );
+  };
+
 
   return (
     <>
@@ -90,7 +118,7 @@ export const ConversionChart = ({
           <select
             name="timePeriod"
             id=""
-            onChange={handleTimePeriodChange}
+            onChange={(e) => setTimePeriod(e.target.value)}
             value={timePeriod}
           >
             <option value="day">Day</option>
@@ -99,7 +127,10 @@ export const ConversionChart = ({
           <select
             name="variations"
             id=""
-            onChange={handleVariationsChange}
+            onChange={(e) => {
+              const val = e.target.value;
+              setSelectedVariations(val === "all" ? allKeys : [val]);
+            }}
             value={
               selectedVariations.length === allKeys.length
                 ? "all"
@@ -115,7 +146,11 @@ export const ConversionChart = ({
           </select>
         </div>
         <div className="chart-display-controls__visual">
-          <select name="chartType" id="" onChange={handleChartTypeChange}>
+          <select
+            name="chartType"
+            id=""
+            onChange={(e) => setChartType(e.target.value)}
+          >
             <option value="line">Line style: smooth line</option>
             <option value="line-linear">Line style: string line</option>
             <option value="line-smooth-outline">Line style: outline</option>
@@ -196,69 +231,9 @@ export const ConversionChart = ({
           cursor={{ fill: "transparent" }}
           wrapperStyle={{ outline: "none" }}
         />
-        {selectedVariations.map((key) => {
-          const i = allKeys.indexOf(key);
-          if (!chartType.startsWith("line")) {
-            return (
-              <ChartComponent
-                key={key}
-                type="monotone"
-                dataKey={key}
-                stroke={CHART_COLORS[i]}
-                fill={CHART_COLORS[i]}
-                dot={false}
-              />
-            );
-          }
-          if (chartType === "line-linear") {
-            return (
-              <ChartComponent
-                key={key}
-                type="linear"
-                dataKey={key}
-                stroke={CHART_COLORS[i]}
-                fill={CHART_COLORS[i]}
-                dot={false}
-              />
-            );
-          }
-          if (chartType === "line-smooth-outline") {
-            return (
-              <>
-                <ChartComponent
-                  key={`${key}-outline-main`}
-                  type="monotone"
-                  dataKey={key}
-                  stroke={CHART_COLORS[i]}
-                  fill={CHART_COLORS[i]}
-                  dot={false}
-                  strokeWidth={10}
-                  strokeOpacity={0.2}
-                  strokeLinecap="square"
-                  isAnimationActive={false}
-                />
-                <ChartComponent
-                  key={key}
-                  type="monotone"
-                  dataKey={key}
-                  stroke={CHART_COLORS[i]}
-                  fill={CHART_COLORS[i]}
-                  dot={false}
-                />
-              </>
-            );
-          }
-          return (
-            <ChartComponent
-              key={key}
-              type="monotone"
-              dataKey={key}
-              stroke={CHART_COLORS[i]}
-              fill={CHART_COLORS[i]}
-              dot={false}
-            />
-          );
-        })}
+        {selectedVariations.map((key) =>
+          renderSeries(key, allKeys.indexOf(key))
+        )}
       </ChartLineStyle>
     </>
   );
