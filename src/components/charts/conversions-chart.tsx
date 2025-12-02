@@ -183,10 +183,10 @@ export const ConversionChart = ({
               allowDataOverflow
             />
             <Tooltip
-              active
               content={<CustomTooltip />}
               cursor={{ fill: "transparent" }}
-              wrapperStyle={{ outline: "none" }}
+              wrapperStyle={{ pointerEvents: "auto", outline: "none" }}
+              trigger="click"
             />
             {selectedVariations.map((key) =>
               renderSeries(key, allKeys.indexOf(key))

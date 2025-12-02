@@ -38,6 +38,10 @@
   border-bottom: 1px dashed var(--border-dashed-color);
 }
 
+.tooltip-item:last-child {
+  border-bottom: none;
+}
+
 .tooltip-item-left {
   display: flex;
   align-items: center;
@@ -52,4 +56,5 @@
 
 .tooltip-value {
   color: var(--chart-data-color);
+  font-weight: 700;
 }
