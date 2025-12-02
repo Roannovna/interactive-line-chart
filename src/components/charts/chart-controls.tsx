@@ -1,5 +1,6 @@
 import { chartControls } from "../../assets/chart-controls/export";
-import "./conversions-chart.css";
+import classNames from "classnames";
+import styles from "./conversions-chart.module.css";
 
 interface ChartControlsProps {
   timePeriod: string;
@@ -31,8 +32,8 @@ export const ChartControls = ({
   resetView,
 }: ChartControlsProps) => {
   return (
-    <div className="chart-display-controls">
-      <div className="chart-display-controls__data">
+    <div className={styles["chart-display-controls"]}>
+      <div className={styles["chart-display-controls__data"]}>
         <select
           name="timePeriod"
           onChange={(e) => setTimePeriod(e.target.value)}
@@ -58,7 +59,7 @@ export const ChartControls = ({
           ))}
         </select>
       </div>
-      <div className="chart-display-controls__visual">
+      <div className={styles["chart-display-controls__visual"]}>
         <select
           name="chartType"
           onChange={(e) => setChartType(e.target.value)}
@@ -70,37 +71,47 @@ export const ChartControls = ({
           <option value="area">Line style: area</option>
         </select>
         <div
-          className={
-            isFullscreen
-              ? "chart-controls chart-controls--fullscreen"
-              : "chart-controls"
-          }
+          className={classNames(styles["chart-controls"], {
+            [styles["chart-controls--fullscreen"]]: isFullscreen,
+          })}
         >
           <button
             onClick={() => setIsFullscreen((v) => !v)}
-            className="chart-controls__btn chart-controls__btn--fullscreen"
+            className={classNames(
+              styles["chart-controls__btn"],
+              styles["chart-controls__btn--fullscreen"]
+            )}
             title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
           >
             <img src={chartControls.fullscreenIcon} alt="fullscreen" />
           </button>
-          <div className="chart-controls__zoom-group">
+          <div className={styles["chart-controls__zoom-group"]}>
             <button
               onClick={zoomOut}
-              className="chart-controls__btn chart-controls__btn--zoom-out"
+              className={classNames(
+                styles["chart-controls__btn"],
+                styles["chart-controls__btn--zoom-out"]
+              )}
               title="Zoom out"
             >
               <img src={chartControls.zoomOutIcon} alt="zoom out" />
             </button>
             <button
               onClick={zoomIn}
-              className="chart-controls__btn chart-controls__btn--zoom-in"
+              className={classNames(
+                styles["chart-controls__btn"],
+                styles["chart-controls__btn--zoom-in"]
+              )}
               title="Zoom in"
             >
               <img src={chartControls.zoomInIcon} alt="zoom in" />
             </button>
             <button
               onClick={resetView}
-              className="chart-controls__btn chart-controls__btn--reset"
+              className={classNames(
+                styles["chart-controls__btn"],
+                styles["chart-controls__btn--reset"]
+              )}
               title="Reset"
             >
               <img src={chartControls.resetIcon} alt="reset" />

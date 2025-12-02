@@ -8,11 +8,12 @@ import {
   LineChart,
   AreaChart,
 } from "recharts";
+import classNames from "classnames";
 import { CHART_COLORS } from "../../styles/chart-colors";
 import { axisFormatDate } from "../../utils";
 import { useState, useMemo, useEffect } from "react";
 import { CustomTooltip } from "../tooltips/custom-tooltip";
-import "./conversions-chart.css";
+import styles from "./conversions-chart.module.css";
 import { ChartControls } from "./chart-controls";
 
 interface ConversionChartProps {
@@ -131,11 +132,9 @@ export const ConversionChart = ({
         resetView={resetView}
       />
       <ChartLineStyle
-        className={
-          isFullscreen
-            ? "chart-wrapper chart-wrapper--fullscreen"
-            : "chart-wrapper"
-        }
+        className={classNames(styles["chart-wrapper"], {
+          [styles["chart-wrapper--fullscreen"]]: isFullscreen,
+        })}
         responsive
         data={dataCurrent.slice(brushStart, brushEnd + 1)}
         margin={{

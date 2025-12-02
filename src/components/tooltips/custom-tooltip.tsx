@@ -2,7 +2,7 @@ import type { RechartsTooltipProps } from "../../types";
 import calendarIcon from "../../assets/calendar.svg";
 import bestIcon from "../../assets/best.svg";
 import { tooltipFormatDate } from "../../utils/format-date";
-import "./custom-tooltip.css";
+import styles from "./custom-tooltip.module.css";
 
 export const CustomTooltip = (props: RechartsTooltipProps) => {
   const { active, payload, label } = props;
@@ -30,25 +30,25 @@ export const CustomTooltip = (props: RechartsTooltipProps) => {
   };
 
   return (
-    <div className="tooltip-box">
-      <div className="tooltip-header">
+    <div className={styles["tooltip-box"]}>
+      <div className={styles["tooltip-header"]}>
         <img src={calendarIcon} alt="" width={18} height={18} />
-        <span className="tooltip-date">
+        <span className={styles["tooltip-date"]}>
           {tooltipFormatDate(label as unknown as number)}
         </span>
       </div>
-      <div className="tooltip-divider" />
-      <div className="tooltip-list">
+      <div className={styles["tooltip-divider"]} />
+      <div className={styles["tooltip-list"]}>
         {items.map((it, idx) => {
           const color = (it.color as string) || "#000";
           return (
             <div
               key={String(it.dataKey ?? it.name ?? idx)}
-              className="tooltip-item"
+              className={styles["tooltip-item"]}
             >
-              <div className="tooltip-item-left">
+              <div className={styles["tooltip-item-left"]}>
                 <span
-                  className="tooltip-dot"
+                  className={styles["tooltip-dot"]}
                   style={{ backgroundColor: color }}
                 />
                 <span>{it.name}</span>
@@ -56,7 +56,7 @@ export const CustomTooltip = (props: RechartsTooltipProps) => {
                   <img src={bestIcon} alt="" width={18} height={18} />
                 ) : null}
               </div>
-              <span className="tooltip-value">{formatPercent(it.value)}</span>
+              <span className={styles["tooltip-value"]}>{formatPercent(it.value)}</span>
             </div>
           );
         })}
