@@ -30,25 +30,25 @@ export const CustomTooltip = (props: RechartsTooltipProps) => {
   };
 
   return (
-    <div className={styles["tooltip-box"]}>
-      <div className={styles["tooltip-header"]}>
+    <div className={styles["custom-tooltip"]}>
+      <div className={styles["custom-tooltip__header"]}>
         <img src={calendarIcon} alt="" width={18} height={18} />
-        <span className={styles["tooltip-date"]}>
+        <span className={styles["custom-tooltip__date"]}>
           {tooltipFormatDate(label as unknown as number)}
         </span>
       </div>
-      <div className={styles["tooltip-divider"]} />
-      <div className={styles["tooltip-list"]}>
+      <div className={styles["custom-tooltip__divider"]} />
+      <div className={styles["custom-tooltip__list"]}>
         {items.map((it, idx) => {
           const color = (it.color as string) || "#000";
           return (
             <div
               key={String(it.dataKey ?? it.name ?? idx)}
-              className={styles["tooltip-item"]}
+              className={styles["custom-tooltip__item"]}
             >
-              <div className={styles["tooltip-item-left"]}>
+              <div className={styles["custom-tooltip__item-left"]}>
                 <span
-                  className={styles["tooltip-dot"]}
+                  className={styles["custom-tooltip__dot"]}
                   style={{ backgroundColor: color }}
                 />
                 <span>{it.name}</span>
@@ -56,7 +56,9 @@ export const CustomTooltip = (props: RechartsTooltipProps) => {
                   <img src={bestIcon} alt="" width={18} height={18} />
                 ) : null}
               </div>
-              <span className={styles["tooltip-value"]}>{formatPercent(it.value)}</span>
+              <span className={styles["custom-tooltip__value"]}>
+                {formatPercent(it.value)}
+              </span>
             </div>
           );
         })}

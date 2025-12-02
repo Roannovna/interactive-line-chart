@@ -1,4 +1,6 @@
-.tooltip-box {
+/** @define custom-tooltip */
+
+.custom-tooltip {
   background: var(--bg-color);
   color: var(--main-text-color);
   border-radius: 12px;
@@ -8,29 +10,29 @@
   max-width: 280px;
 }
 
-.tooltip-header {
+.custom-tooltip__header {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
 }
 
-.tooltip-date {
+.custom-tooltip__date {
   color: var(--chart-data-color);
 }
 
-.tooltip-divider {
+.custom-tooltip__divider {
   border-top: 1px solid var(--axis-lines-color);
   margin: 8px 0 6px;
 }
 
-.tooltip-list {
+.custom-tooltip__list {
   max-height: 108px;
   overflow-y: auto;
   padding-right: 6px;
 }
 
-.tooltip-item {
+.custom-tooltip__item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38,23 +40,23 @@
   border-bottom: 1px dashed var(--border-dashed-color);
 }
 
-.tooltip-item:last-child {
+.custom-tooltip__item:last-child {
   border-bottom: none;
 }
 
-.tooltip-item-left {
+.custom-tooltip__item-left {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.tooltip-dot {
+.custom-tooltip__dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
 }
 
-.tooltip-value {
+.custom-tooltip__value {
   color: var(--chart-data-color);
   font-weight: 700;
 }

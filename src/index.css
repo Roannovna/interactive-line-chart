@@ -1,4 +1,4 @@
-@import './styles/theme.css';
+@import url('./styles/theme.css');
 
 *,
 *::before,
@@ -19,12 +19,11 @@ body {
 
 button,
 a {
-  color: currentColor;
+  color: currentcolor;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
 }
-
 
 select {
   height: 28px;
@@ -37,6 +36,11 @@ select {
   color: var(--main-text-color);
   cursor: pointer;
   background-color: var(--chart-controls-bg-color);
+}
+
+select option {
+  background-color: var(--bg-color);
+  color: var(--main-text-color);
 }
 
 ::-webkit-scrollbar {

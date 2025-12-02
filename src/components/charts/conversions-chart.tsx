@@ -151,8 +151,8 @@ export const ConversionChart = ({
       />
       <div
         ref={chartRef}
-        className={classNames(styles["chart-wrapper"], {
-          [styles["chart-wrapper--fullscreen"]]: isFullscreen,
+        className={classNames(styles["conversions-chart__wrapper"], {
+          [styles["conversions-chart__wrapper--fullscreen"]]: isFullscreen,
         })}
       >
         <ResponsiveContainer width="100%" height="100%">
