@@ -97,7 +97,6 @@ export const ConversionChart = ({
   const renderSeries = (key: string, index: number) => {
     const color = CHART_COLORS[index];
     const commonProps = {
-      key,
       dataKey: key,
       stroke: color,
       fill: color,
@@ -116,13 +115,14 @@ export const ConversionChart = ({
             strokeLinecap="square"
             isAnimationActive={false}
           />
-          <ChartComponent {...commonProps} type="monotone" />
+          <ChartComponent key={key} {...commonProps} type="monotone" />
         </>
       );
     }
 
     return (
       <ChartComponent
+        key={key}
         {...commonProps}
         type={chartType === "line-linear" ? "linear" : "monotone"}
       />
@@ -155,7 +155,12 @@ export const ConversionChart = ({
           [styles["conversions-chart__wrapper--fullscreen"]]: isFullscreen,
         })}
       >
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          minHeight={300}
+          debounce={200}
+        >
           <ChartLineStyle
             data={dataCurrent.slice(brushStart, brushEnd + 1)}
             margin={{

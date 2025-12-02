@@ -7,8 +7,14 @@
       "componentSelectors": {
         "initial": "^\\.{componentName}(?:__[a-z0-9-]+)?(?:--[a-z0-9-]+)?$"
       },
-      "ignoreSelectors": ["^\\.recharts-surface"]
+      "ignoreSelectors": ["^:global"]
     },
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ],
     "selector-class-pattern": null
   }
 }

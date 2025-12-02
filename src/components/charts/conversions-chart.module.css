@@ -76,6 +76,7 @@
   z-index: 1;
   max-width: 700px;
   max-height: 70vh;
+  min-height: 300px;
   aspect-ratio: 1.618;
 }
 
@@ -87,7 +88,13 @@
   max-height: 100vh;
 }
 
-/* stylelint-disable-next-line plugin/selector-bem-pattern */
-.recharts-surface {
+:global(.recharts-wrapper),
+:global(.recharts-wrapper:focus),
+:global(.recharts-wrapper:active),
+:global(.recharts-wrapper:focus-visible),
+:global(.recharts-surface),
+:global(.recharts-surface:focus),
+:global(.recharts-surface:active),
+:global(.recharts-surface:focus-visible) {
   outline: none !important;
 }
