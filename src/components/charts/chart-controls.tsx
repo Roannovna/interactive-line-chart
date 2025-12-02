@@ -15,6 +15,7 @@ interface ChartControlsProps {
   zoomOut: () => void;
   zoomIn: () => void;
   resetView: () => void;
+  onExport?: () => void;
 }
 
 export const ChartControls = ({
@@ -30,6 +31,7 @@ export const ChartControls = ({
   zoomOut,
   zoomIn,
   resetView,
+  onExport,
 }: ChartControlsProps) => {
   return (
     <div className={styles["chart-display-controls"]}>
@@ -75,6 +77,19 @@ export const ChartControls = ({
             [styles["chart-controls--fullscreen"]]: isFullscreen,
           })}
         >
+          {onExport && (
+            <button
+              onClick={onExport}
+              className={classNames(
+                styles["chart-controls__btn"],
+                styles["chart-controls__btn--export"]
+              )}
+              title="Export to PNG"
+              style={{ borderRadius: 4 }}
+            >
+              <img src={chartControls.pngIcon} alt="PNG" />
+            </button>
+          )}
           <button
             onClick={() => setIsFullscreen((v) => !v)}
             className={classNames(

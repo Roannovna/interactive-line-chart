@@ -7,14 +7,16 @@ import {
   Tooltip,
   LineChart,
   AreaChart,
+  ResponsiveContainer,
 } from "recharts";
 import classNames from "classnames";
 import { CHART_COLORS } from "../../styles/chart-colors";
 import { axisFormatDate } from "../../utils";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { CustomTooltip } from "../tooltips/custom-tooltip";
 import styles from "./conversions-chart.module.css";
 import { ChartControls } from "./chart-controls";
+import html2canvas from "html2canvas";
 
 interface ConversionChartProps {
   dataDay: Record<string, number | string | null>[];
@@ -28,8 +30,23 @@ export const ConversionChart = ({
   const [chartType, setChartType] = useState("line");
   const [timePeriod, setTimePeriod] = useState("day");
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const chartRef = useRef<HTMLDivElement>(null);
 
   const dataCurrent = timePeriod === "day" ? dataDay : dataWeek;
+
+  const handleExport = async () => {
+    if (chartRef.current) {
+      const canvas = await html2canvas(chartRef.current, {
+        backgroundColor: getComputedStyle(document.documentElement)
+          .getPropertyValue("--bg-color")
+          .trim(),
+      });
+      const link = document.createElement("a");
+      link.download = "chart-export.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  };
 
   const allKeys = useMemo(
     () => Object.keys(dataCurrent[0] || {}).filter((k) => k !== "date"),
@@ -130,44 +147,53 @@ export const ConversionChart = ({
         zoomOut={zoomOut}
         zoomIn={zoomIn}
         resetView={resetView}
+        onExport={handleExport}
       />
-      <ChartLineStyle
+      <div
+        ref={chartRef}
         className={classNames(styles["chart-wrapper"], {
           [styles["chart-wrapper--fullscreen"]]: isFullscreen,
         })}
-        responsive
-        data={dataCurrent.slice(brushStart, brushEnd + 1)}
-        margin={{
-          top: 20,
-          right: 0,
-          left: 0,
-          bottom: 0,
-        }}
       >
-        <CartesianGrid strokeDasharray="3 3" stroke="var(--axis-lines-color)" />
-        <XAxis
-          dataKey="date"
-          tickFormatter={axisFormatDate}
-          tick={{ fill: "var(--axis-label-color)" }}
-          allowDataOverflow
-        />
-        <YAxis
-          width="auto"
-          name="conversion"
-          tickFormatter={(v) => v + "%"}
-          tick={{ fill: "var(--axis-label-color)" }}
-          allowDataOverflow
-        />
-        <Tooltip
-          active
-          content={<CustomTooltip />}
-          cursor={{ fill: "transparent" }}
-          wrapperStyle={{ outline: "none" }}
-        />
-        {selectedVariations.map((key) =>
-          renderSeries(key, allKeys.indexOf(key))
-        )}
-      </ChartLineStyle>
+        <ResponsiveContainer width="100%" height="100%">
+          <ChartLineStyle
+            data={dataCurrent.slice(brushStart, brushEnd + 1)}
+            margin={{
+              top: 20,
+              right: 0,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="var(--axis-lines-color)"
+            />
+            <XAxis
+              dataKey="date"
+              tickFormatter={axisFormatDate}
+              tick={{ fill: "var(--axis-label-color)" }}
+              allowDataOverflow
+            />
+            <YAxis
+              width="auto"
+              name="conversion"
+              tickFormatter={(v) => v + "%"}
+              tick={{ fill: "var(--axis-label-color)" }}
+              allowDataOverflow
+            />
+            <Tooltip
+              active
+              content={<CustomTooltip />}
+              cursor={{ fill: "transparent" }}
+              wrapperStyle={{ outline: "none" }}
+            />
+            {selectedVariations.map((key) =>
+              renderSeries(key, allKeys.indexOf(key))
+            )}
+          </ChartLineStyle>
+        </ResponsiveContainer>
+      </div>
     </>
   );
 };
