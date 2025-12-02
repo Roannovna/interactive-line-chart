@@ -13,7 +13,7 @@ import { axisFormatDate } from "../../utils";
 import { useState, useMemo, useEffect } from "react";
 import { CustomTooltip } from "../tooltips/custom-tooltip";
 import "./conversions-chart.css";
-import { chartControls } from "../../assets/chart-controls/export";
+import { ChartControls } from "./chart-controls";
 
 interface ConversionChartProps {
   dataDay: Record<string, number | string | null>[];
@@ -35,7 +35,8 @@ export const ConversionChart = ({
     [dataCurrent]
   );
 
-  const [selectedVariations, setSelectedVariations] = useState<string[]>(allKeys);
+  const [selectedVariations, setSelectedVariations] =
+    useState<string[]>(allKeys);
   const [brushStart, setBrushStart] = useState(0);
   const [brushEnd, setBrushEnd] = useState(dataCurrent.length - 1);
 
@@ -110,92 +111,25 @@ export const ConversionChart = ({
     );
   };
 
-
   return (
     <>
-      <div className="chart-display-controls">
-        <div className="chart-display-controls__data">
-          <select
-            name="timePeriod"
-            id=""
-            onChange={(e) => setTimePeriod(e.target.value)}
-            value={timePeriod}
-          >
-            <option value="day">Day</option>
-            <option value="week">Week</option>
-          </select>
-          <select
-            name="variations"
-            id=""
-            onChange={(e) => {
-              const val = e.target.value;
-              setSelectedVariations(val === "all" ? allKeys : [val]);
-            }}
-            value={
-              selectedVariations.length === allKeys.length
-                ? "all"
-                : selectedVariations[0] || "all"
-            }
-          >
-            <option value="all">All variations selected</option>
-            {allKeys.map((k) => (
-              <option key={k} value={k}>
-                {k}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="chart-display-controls__visual">
-          <select
-            name="chartType"
-            id=""
-            onChange={(e) => setChartType(e.target.value)}
-          >
-            <option value="line">Line style: smooth line</option>
-            <option value="line-linear">Line style: string line</option>
-            <option value="line-smooth-outline">Line style: outline</option>
-            <option value="area">Line style: area</option>
-          </select>
-          <div
-            className={
-              isFullscreen
-                ? "chart-controls chart-controls--fullscreen"
-                : "chart-controls"
-            }
-          >
-            <button
-              onClick={() => setIsFullscreen((v) => !v)}
-              className="chart-controls__btn chart-controls__btn--fullscreen"
-              title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-            >
-              <img src={chartControls.fullscreenIcon} alt="fullscreen" />
-            </button>
-            <div className="chart-controls__zoom-group">
-              <button
-                onClick={zoomOut}
-                className="chart-controls__btn chart-controls__btn--zoom-out"
-                title="Zoom out"
-              >
-                <img src={chartControls.zoomOutIcon} alt="zoom out" />
-              </button>
-              <button
-                onClick={zoomIn}
-                className="chart-controls__btn chart-controls__btn--zoom-in"
-                title="Zoom in"
-              >
-                <img src={chartControls.zoomInIcon} alt="zoom in" />
-              </button>
-              <button
-                onClick={resetView}
-                className="chart-controls__btn chart-controls__btn--reset"
-                title="Reset"
-              >
-                <img src={chartControls.resetIcon} alt="reset" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ChartControls
+        timePeriod={timePeriod}
+        setTimePeriod={setTimePeriod}
+        selectedVariations={selectedVariations}
+        handleVariationsChange={(e) => {
+          const val = e.target.value;
+          setSelectedVariations(val === "all" ? allKeys : [val]);
+        }}
+        allKeys={allKeys}
+        chartType={chartType}
+        setChartType={setChartType}
+        isFullscreen={isFullscreen}
+        setIsFullscreen={setIsFullscreen}
+        zoomOut={zoomOut}
+        zoomIn={zoomIn}
+        resetView={resetView}
+      />
       <ChartLineStyle
         className={
           isFullscreen
