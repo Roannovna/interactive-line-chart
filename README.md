@@ -1,74 +1,89 @@
-# React + TypeScript + Vite
+# Interactive Line Chart
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project implements an interactive line chart using React, TypeScript, and Recharts. It visualizes conversion data with various interactive features and customization options.
 
-Currently, two official plugins are available:
+## Chosen Visualization Library
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Recharts** (`recharts`) was chosen for this project because:
 
-## React Compiler
+- It is a composable charting library built on React components.
+- It uses SVG for rendering, ensuring high-quality scaling and performance.
+- It offers great flexibility for customization (custom tooltips, axes, legends).
+- It has excellent documentation and community support.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Implemented Features
 
-## Expanding the ESLint configuration
+### Core Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Interactive Visualization:** Displays conversion rates over time using Line or Area charts.
+- **Time Period Selection:** Toggle between **Day** and **Week** data views.
+- **Variation Filtering:** Filter the chart to show specific data variations or all variations at once.
+- **Custom Tooltips:** Hover over data points to see detailed information with a custom-styled tooltip.
+- **Responsive Design:** The chart adapts to the container size.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Bonus & Advanced Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Chart Type Switching:** Users can switch between different chart styles:
+  - Linear Line
+  - Smooth Line
+  - Smooth Line with Outline (Visual enhancement)
+  - Area Chart
+- **Zoom Controls:** Dedicated **Zoom In** and **Zoom Out** buttons to explore data in detail.
+- **Fullscreen Mode:** Toggle fullscreen view for an immersive analysis experience.
+- **Reset View:** Quickly reset zoom levels and exit fullscreen mode.
+- **Brush/Selection (Internal):** The zoom functionality is implemented using data slicing (brushing logic) for performance.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Local Setup Instructions
+
+Follow these steps to set up and run the project locally:
+
+### Prerequisites
+
+- Node.js (v16 or higher recommended)
+- npm (or yarn/pnpm)
+
+### Installation
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone <repository-url>
+    cd interactive-line-chart
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+### Development
+
+To start the development server with Hot Module Replacement (HMR):
+
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open your browser and navigate to the URL shown in the terminal (usually `http://localhost:5173`).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Production Build
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To build the project for production:
+
+```bash
+npm run build
 ```
-# interactive-line-chart
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
+
+### Linting
+
+To run ESLint and check for code quality issues:
+
+```bash
+npm run lint
+```
